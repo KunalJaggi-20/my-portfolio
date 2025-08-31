@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kunal Jaggi — Portfolio (Vanilla)</title>
+  <style>
+    :root{
+      --bg:#1F2128; --panel:#1E1E1E; --panel-2:#2D2D2D; --panel-3:#252526; --panel-4:#37373D; --panel-5:#3E3E42; --border:#2d2d2d; --border-2:#3c3c3c;
+      --text:#e5e7eb; --muted:#9ca3af; --brand:#5537B9; --blue:#3b82f6; --purple:#a855f7; --green:#22c55e; --yellow:#eab308; --red:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:var(--bg);color:var(--text);}
+
+    /* Add spacing between cards only inside the projects tab */
+    #editorContent .card {
+    margin-bottom: 12px; /* Space between projects */
+    }
+
+    #editorContent .card:last-child {
+    margin-bottom: 0; /* Avoid extra space at the end */
+    }
+
+    /* Layout shells */
+    .center{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;overflow:hidden}
+
+    /* Stages */
+    .hidden{display:none !important}
+
+    /* Typing headline */
+    .headline{display:flex;align-items:center;font-weight:800;font-size:clamp(2rem,6vw,3.5rem)}
+    .cursor{display:inline-block;width:.25rem;height:1.8em;margin-left:.25rem;background:#fff;animation:blink .5s step-end infinite}
+
+    /* Progress */
+    .progress-wrap{width:min(720px,90vw);display:flex;flex-direction:column;align-items:center}
+    .progress-title{font-size:clamp(2rem,6vw,3.5rem);font-weight:800;margin:0 0 24px}
+    .progress{width:100%;height:10px;background:#4b5563;border-radius:999px;overflow:hidden}
+
+/* --- IMPORTANT: use transform to animate the bar (guarantees start at 0) --- */
+    .bar{height:100%;background:var(--purple);border-radius:999px;will-change:transform;transform-origin:left;transform:scaleX(0);}
+
+    /* VSCode window */
+    .vscode{background:#1F2128;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.45);display:flex;flex-direction:column;height:80svh;max-height:860px;width:min(1100px,96vw)}
+    .titlebar{display:flex;justify-content:space-between;align-items:center;background:var(--panel-2);padding:8px;border-radius:12px 12px 0 0}
+    .titlebar .left{display:flex;align-items:center;gap:8px}
+    .titlebar .appname{font-size:.9rem;font-weight:700}
+    .winbtn{color:#cbd5e1;background:none;border:0;cursor:pointer;padding:6px;border-radius:6px}
+    .winbtn:hover{color:#fff}
+    .title{display:flex;align-items:center;gap:8px}
+
+    .workbench{display:flex;flex:1;overflow:hidden;border:1px solid var(--border);border-top:0;background:var(--panel)}
+    .menubar{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--panel-2);border-bottom:1px solid var(--border-2)}
+    .traffic{display:flex;gap:6px}
+    .dot{width:12px;height:12px;border-radius:999px}
+    .dot.red{background:var(--red)}.dot.yellow{background:var(--yellow)}.dot.green{background:var(--green)}
+    .toolbar-title{flex:1;text-align:center;color:var(--muted);font-size:.8rem}
+
+    .explorer{width:250px;flex:0 0 250px;background:var(--panel-3);padding:16px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--border)}
+    .explorer .section-title{display:flex;align-items:center;gap:8px;color:#9aa1a8;text-transform:uppercase;font-size:.72rem;letter-spacing:.06em}
+    .explorer .group-title{font-size:.72rem;color:#9aa1a8}
+    .file{display:flex;align-items:center;gap:8px;padding:6px;border-radius:4px;cursor:pointer;color:#d1d5db}
+    .file:hover{background:var(--panel-5)}
+    .file.active{background:var(--panel-4);color:#fff}
+
+    .editor{display:flex;flex-direction:column;flex:1;overflow:hidden}
+    .tabbar{display:flex;align-items:center;gap:6px;background:var(--panel-2);padding:4px;border-bottom:1px solid var(--border)}
+    .tab{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--panel);border-radius:8px 8px 0 0;color:#fff;font-size:.9rem}
+    .tab .close{color:var(--muted);margin-left:6px;cursor:pointer}
+    .content{flex:1;overflow:auto;padding:16px}
+    pre{white-space:pre-wrap;font-size:.9rem}
+
+    .statusbar{display:flex;align-items:center;justify-content:space-between;background:var(--brand);padding:8px 12px;color:#fff;border-radius:0 0 12px 12px;font-size:.78rem}
+    .statusbar .row{display:flex;gap:16px;align-items:center}
+
+    /* Cards */
+    .card{background:var(--panel-2);padding:16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between}
+    .btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+    .btn:hover{filter:brightness(1.05)}
+
+    /* Modal */
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+    .modal{background:var(--panel-2);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.6);display:flex;flex-direction:column;max-width:680px;width:100%;max-height:80%}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--border-2)}
+    .modal-body{padding:16px;overflow:auto}
+
+    /* Terminal */
+    .terminal{display:flex;flex-direction:column;height:100%;background:var(--panel)}
+    .term-log{flex:1;overflow:auto;padding:8px;color:#86efac;white-space:pre-wrap}
+    .term-input{display:flex;align-items:center;gap:8px;background:var(--panel-2);padding:8px}
+    .term-input input{flex:1;background:transparent;border:0;outline:none;color:#fff;font:inherit}
+
+    /* Skills */
+    .skills h3{margin:0 0 16px;font-size:1.25rem;color:#d1d5db}
+    svg text{fill:#d1d5db;font-size:.8rem}
+
+    /* Dock */
+    .dock{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;display:flex;gap:8px;background:rgba(45,45,45,.75);backdrop-filter:blur(6px);border:1px solid #444;padding:8px;border-radius:14px;z-index:20}
+    .dock img{width:48px;height:48px;border-radius:12px;cursor:pointer;transition:transform .15s}
+    .dock img:hover{transform:scale(1.1)}
+
+    /* Animations */
+    @keyframes popUp{0%{transform:scale(.8);opacity:0}80%{transform:scale(1.02);opacity:1}100%{transform:scale(1)}}
+    .animate-pop-up{animation:popUp .5s cubic-bezier(.175,.885,.32,1.275) forwards}
+    @keyframes minimizeVsCode{0%{transform:scale(1);opacity:1}100%{transform:scale(.1) translate(-210%,1500%);opacity:0}}
+    .animate-minimize-vs-code{animation:minimizeVsCode .5s ease-in-out forwards}
+    @keyframes popOutOfDock{0%{transform:scale(.1) translate(110%,1500%);opacity:0}50%{transform:scale(1.05);opacity:1}100%{transform:scale(1)}}
+    .animate-pop-out-of-dock{animation:popOutOfDock .5s cubic-bezier(.175,.885,.32,1.275) forwards}
+    @keyframes popIntoDock{0%{transform:scale(1);opacity:1}100%{transform:scale(.1) translate(110%,1500%);opacity:0}}
+    .animate-pop-into-dock{animation:popIntoDock .5s ease-in-out forwards}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .blink{animation:blink .5s step-end infinite}
+    @keyframes slideIn{0%{transform:translateX(-100%);opacity:0}100%{transform:translateX(0);opacity:1}}
+    .slide{animation:slideIn .5s ease-out forwards}
+  </style>
+</head>
+<body>
+  <div class="center" id="app">
+    <!-- Stage: initial typing -->
+    <div id="stage-initial" class="stage-initial">
+      <div class="headline"><span id="typed">Hello, World!</span><span id="caret" class="cursor"></span></div>
+    </div>
+
+    <!-- Stage: loading -->
+    <div id="stage-loading" class="hidden">
+      <div class="progress-wrap">
+        <h1 class="progress-title">Hello, World!</h1>
+        <div class="progress"><div id="bar" class="bar"></div></div>
+      </div>
+    </div>
+
+    <!-- Stage: VS Code window (loaded/closing) -->
+    <div id="stage-window" class="hidden">
+      <div id="windowShell" class="vscode animate-pop-up">
+        <!-- Titlebar -->
+        <div class="titlebar">
+          <div class="left title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8l-6-6V9l6-6z"></path></svg>
+            <span class="appname">Portfolio - Visual Studio Code</span>
+          </div>
+          <div class="right">
+            <button class="winbtn" id="btnMin">−</button>
+            <button class="winbtn">▢</button>
+            <button class="winbtn" id="btnClose">✕</button>
+          </div>
+        </div>
+
+        <!-- Workbench -->
+        <div class="workbench">
+          <div class="editor-col" style="display:flex;flex-direction:column;flex:1;overflow:hidden;width:100%">
+            <div class="menubar">
+              <div class="traffic">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+              </div>
+              <div class="toolbar-title" id="toolbarTitle">Portfolio - about.json</div>
+              <div style="width:48px"></div>
+            </div>
+            <div style="display:flex;flex:1;overflow:hidden">
+              <!-- Explorer -->
+              <aside class="explorer">
+                <div class="section-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4l2 2h8v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6h6z"/></svg>
+                  <span>Explorer</span>
+                </div>
+                <div>
+                  <div class="group-title">PORTFOLIO</div>
+                  <div id="fileList"></div>
+                </div>
+              </aside>
+
+              <!-- Editor -->
+              <section class="editor">
+                <div class="tabbar">
+                  <div class="tab" id="tabActive">
+                    <span id="tabIcon">📄</span>
+                    <span id="tabName">about.json</span>
+                    <span class="close">x</span>
+                  </div>
+                </div>
+                <div class="content" id="editorContent">
+                  <!-- dynamic -->
+                </div>
+              </section>
+            </div>
+            <div class="statusbar">
+              <div class="row">
+                <span>© 2025 Kunal Jaggi</span>
+                <span>Ln 1, Col 1</span>
+              </div>
+              <div class="row">
+                <span>Git Branch: main</span>
+                <span>UTF-8</span>
+                <span id="langTag">json</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage: terminal pop-up (after close) -->
+    <div id="stage-pop" class="hidden">
+      <div class="modal-backdrop">
+        <div class="modal animate-pop-out-of-dock" style="width:auto;max-width:520px">
+          <div class="modal-body" id="farewellBody" style="font-size:.9rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage: terminal closing animation (shrinks) -->
+    <div id="stage-pop-closing" class="hidden">
+      <div class="modal-backdrop">
+        <div class="modal animate-pop-into-dock" style="width:auto;max-width:520px">
+          <div class="modal-body" id="farewellBody2" style="font-size:.9rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dock -->
+    <div id="dock" class="dock hidden">
+      <img src="https://placehold.co/48x48/007ACC/white?text=VS" alt="VS Code">
+      <img src="https://placehold.co/48x48/1A73E8/white?text=Chrome" alt="Chrome">
+      <img src="https://placehold.co/48x48/232F3E/white?text=Android" alt="Android Studio">
+      <img src="https://placehold.co/48x48/0077B5/white?text=LI" alt="LinkedIn">
+      <img src="https://placehold.co/48x48/181717/white?text=GH" alt="GitHub">
+      <img src="https://placehold.co/48x48/00FF00/000?text=%3E" alt="Terminal">
+    </div>
+  </div>
+
+  <!-- Modal (README) -->
+  <template id="readmeTemplate">
+    <div class="modal-backdrop" id="readmeBackdrop">
+      <div class="modal">
+        <div class="modal-head">
+          <span style="font-weight:700;font-size:.9rem">README.md</span>
+          <button class="winbtn" id="readmeClose">✕</button>
+        </div>
+        <div class="modal-body"><pre id="readmeContent"></pre></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // ------------------------------ Data ------------------------------
+    const skillsData = [
+      { name: 'Python', level: 90 },
+      { name: 'React.js', level: 85 },
+      { name: 'JavaScript', level: 80 },
+      { name: 'TensorFlow', level: 75 },
+      { name: 'Node.js', level: 70 },
+      { name: 'SQL', level: 65 },
+      { name: 'Java', level: 60 },
+    ];
+
+    const fileContent = {
+      'about.json': {
+        title: 'About Me',
+        language: 'json',
+        content: `{
+  "name": "Kunal Jaggi",
+  "role": "Aspiring Software Developer / AI/ML Engineer",
+  "bio": "A passionate CSE student with a focus on building impactful applications and exploring the depths of AI and Machine Learning. I enjoy turning complex problems into elegant code and am always eager to learn new technologies.",
+  "location": "Your City, Country"
+}`
+      },
+      'projects.js': {
+        title: 'Projects',
+        language: 'javascript',
+        content: `// Click on a project to view its details
+const projects = [
+  {
+    name: 'Project Alpha',
+    description: 'A brief description of your project.',
+    github: 'https://github.com/KunalJaggi-20/project-alpha'
+  },
+  {
+    name: 'Neural Network for Image Classification',
+    description: 'A description of an AI/ML project.',
+    github: 'https://github.com/KunalJaggi-20/ml-project'
+  },
+  {
+    name: 'Portfolio Website',
+    description: 'A cool website that looks like VS Code!',
+    github: 'https://github.com/KunalJaggi-20/portfolio-website'
+  }
+];`
+      },
+      'achievements.txt': {
+        title: 'Achievements',
+        language: 'plaintext',
+        content: `> Here's a list of my key achievements and skills.
+
+* Dean's List (2023, 2024, 2025)
+* Certified in AWS Cloud Practitioner
+* Won 1st place in University Hackathon 2023
+* Languages: Python, JavaScript, C++, Java, SQL
+* Frameworks: React, Node.js, TensorFlow, PyTorch, Scikit-learn
+* Databases: MongoDB, PostgreSQL
+`
+      },
+      'skills.svg': { title: 'Skills', language: 'svg', content: '' },
+      'socials.html': { title: 'Socials', language: 'html', content: `// Click the links below to connect with me!` },
+      'resume.pdf': { title: 'Resume', language: 'plaintext', content: `// Click the button below to download my resume!\n// For a better experience, open on desktop.` },
+      'terminal.sh': { title: 'Terminal', language: 'bash', content: '' }
+    };
+
+    const projectReadmes = {
+      'Project Alpha': `### Project Alpha
+A comprehensive web application built to solve a real-world problem.
+
+**Features:**
+- User authentication
+- Data visualization dashboards
+- API integrations
+
+**Tech Stack:**
+- React.js
+- Node.js-
+- MongoDB`,
+      'Neural Network for Image Classification': `### Neural Network for Image Classification
+A machine learning model to classify images of different animals.
+
+**Methodology:**
+- Used a convolutional neural network (CNN)
+- Trained on a custom dataset
+- Achieved 95% accuracy
+
+**Tech Stack:**
+- Python
+- TensorFlow
+- Keras
+- NumPy`,
+      'Portfolio Website': `### Portfolio Website
+My personal portfolio, designed to look like a VS Code editor.
+
+**Features:**
+- Interactive terminal
+- Dynamic content loading
+- Responsive design
+
+**Tech Stack:**
+- React.js
+- Tailwind CSS`
+    };
+
+    // ------------------------------ Utilities ------------------------------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    // ------------------------------ Stage Machine ------------------------------
+    const stageInitial = $('#stage-initial');
+    const stageLoading = $('#stage-loading');
+    const stageWindow  = $('#stage-window');
+    const stagePop     = $('#stage-pop');
+    const stagePopClosing = $('#stage-pop-closing');
+    const dock = $('#dock');
+
+    let stage = 'initial';
+    let typingTimer=null, cursorTimer=null;
+
+    function setStage(next){
+      stage = next;
+      stageInitial.classList.toggle('hidden', stage!=='initial');
+      stageLoading.classList.toggle('hidden', stage!=='loading');
+      stageWindow.classList.toggle('hidden', !(stage==='loaded' || stage==='closing'));
+      stagePop.classList.toggle('hidden', stage!=='terminal-pop-up');
+      stagePopClosing.classList.toggle('hidden', stage!=='terminal-closing');
+      dock.classList.toggle('hidden', !(stage==='closing' || stage==='terminal-pop-up' || stage==='terminal-closing'));
+    }
+
+    // Initial typing → Loading
+    function runInitial(){
+      const fullText = 'Hello, World!';
+      const typed = $('#typed');
+      const caret = $('#caret');
+      let i=0; typed.textContent='';
+      typingTimer = setInterval(()=>{
+        if(i<fullText.length){ typed.textContent = fullText.slice(0,++i); }
+        else{ 
+          clearInterval(typingTimer);
+          // start loading only after we set the stage to 'loading' so the bar is visible at 0%
+          setTimeout(()=>{
+            setStage('loading');
+            runLoading();
+          }, 1000);
+        }
+      },100);
+      cursorTimer = setInterval(()=>{ caret.classList.toggle('blink'); },500);
+    }
+
+    // Loading → Loaded
+    function runLoading(){
+      const bar = $('#bar');
+
+      // reset visual to zero using transform
+      bar.style.transform = 'scaleX(0)';
+      // force reflow to ensure the browser applies the reset before we animate
+      void bar.offsetWidth;
+
+      const duration = 1500; // ms (matches previous behavior roughly)
+      const start = performance.now();
+
+      function frame(now){
+        const elapsed = now - start;
+        const progress = Math.min(1, elapsed / duration);
+        bar.style.transform = 'scaleX(' + progress + ')';
+        if(progress < 1){
+          requestAnimationFrame(frame);
+        } else {
+          // finished
+          setTimeout(()=>{ setStage('loaded'); initWindow(); }, 500);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // ------------------------------ VSCode Window ------------------------------
+    let activeTab = 'about.json';
+    let typingTimerEditor=null, cursorTimerEditor=null;
+    let isTerminalBusy = false;
+    let terminalOutput = ['Welcome to my portfolio terminal.','Type \"help\" to see available commands.'];
+
+    function iconFor(file){
+      switch(file){
+        case 'projects.js': return '🟨';
+        case 'achievements.txt': return '🎓';
+        case 'about.json': return '📄';
+        case 'skills.svg': return '📊';
+        case 'socials.html': return '🌐';
+        case 'resume.pdf': return '📄';
+        case 'terminal.sh': return '⌨️';
+        default: return '📄';
+      }
+    }
+
+    function initWindow(){
+      // Build file list
+      const list = $('#fileList'); list.innerHTML='';
+      Object.keys(fileContent).forEach(fn=>{
+        const el = document.createElement('div'); el.className='file'+(fn===activeTab?' active':'');
+        el.innerHTML = `<span>${iconFor(fn)}</span><span>${fn}</span>`;
+        el.addEventListener('click',()=>{ setActiveTab(fn); });
+        list.appendChild(el);
+      });
+
+      // Buttons
+      $('#btnClose').onclick = ()=>{ setStage('closing'); $('#windowShell').classList.add('animate-minimize-vs-code'); setTimeout(()=>{ setStage('terminal-pop-up'); runFarewellTyping(); }, 500); };
+      $('#btnMin').onclick = ()=>{ /* no-op visual */ };
+
+      // First paint
+      renderEditor();
+    }
+
+    function setActiveTab(name){ activeTab = name; $('#toolbarTitle').textContent = `Portfolio - ${name}`; renderEditor();
+      // highlight in explorer
+      $$('#fileList .file').forEach(el=>{ el.classList.toggle('active', el.textContent.trim().endsWith(name)); });
+    }
+
+    function renderEditor(){
+      const tabName = $('#tabName'); tabName.textContent = activeTab;
+      const langTag = $('#langTag'); langTag.textContent = fileContent[activeTab]?.language || '';
+      const content = $('#editorContent');
+
+      clearInterval(typingTimerEditor); clearInterval(cursorTimerEditor);
+      content.innerHTML='';
+
+      if(['terminal.sh','projects.js','skills.svg','socials.html'].includes(activeTab)){
+        if(activeTab==='projects.js') renderProjects(content);
+        if(activeTab==='skills.svg')  renderSkills(content);
+        if(activeTab==='socials.html') renderSocials(content);
+        if(activeTab==='terminal.sh') renderTerminal(content);
+        return;
+      }
+
+      // Typing content with caret
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      const caret = document.createElement('span'); caret.className='cursor';
+      pre.appendChild(code); pre.appendChild(caret); content.appendChild(pre);
+
+      let i=0; const full = fileContent[activeTab]?.content || '';
+      code.textContent=''; caret.style.marginLeft='4px';
+      typingTimerEditor = setInterval(()=>{
+        if(i<full.length){ code.textContent = full.slice(0,++i); }
+        else { clearInterval(typingTimerEditor); cursorTimerEditor = setInterval(()=> caret.classList.toggle('blink'), 500); }
+      },15);
+    }
+
+    function renderProjects(root){
+      root.innerHTML = `<h3 style="margin:0 0 16px;font-size:1.25rem;color:#d1d5db">My Awesome Projects</h3>`;
+      Object.keys(projectReadmes).forEach(name=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `<span style="font-weight:700;color:#fde68a">${name}</span>`;
+        const btn = document.createElement('button'); btn.className='btn'; btn.textContent='README.md';
+        btn.onclick = ()=> openReadme(name);
+        card.appendChild(btn); root.appendChild(card);
+      });
+    }
+
+    function renderSkills(root){
+      const wrap = document.createElement('div'); wrap.className='skills';
+      wrap.innerHTML = `<h3>My Skills</h3>`;
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('width','100%'); svg.setAttribute('height','300'); svg.setAttribute('viewBox','0 0 500 300');
+      skillsData.forEach((s,idx)=>{
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x','1'); t.setAttribute('y', idx*40 + 20); t.textContent = s.name; g.appendChild(t);
+        const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        r.setAttribute('x','100'); r.setAttribute('y', idx*40 + 10); r.setAttribute('width', 0); r.setAttribute('height',20);
+        r.setAttribute('rx',5); r.setAttribute('ry',5); r.setAttribute('fill', '#a855f7'); g.appendChild(r);
+        svg.appendChild(g);
+        // animate width
+        setTimeout(()=>{ r.setAttribute('width', s.level*4); r.style.transition='width .6s ease-out'; }, idx*120);
+      });
+      wrap.appendChild(svg); root.appendChild(wrap);
+    }
+
+    function renderSocials(root){
+      const box = document.createElement('div');
+      box.innerHTML = `
+        <h3 style="margin:0 0 16px;font-size:1.25rem;color:#d1d5db">My Socials</h3>
+        <p style="color:#9ca3af;margin:0 0 12px">You can connect with me on the following platforms.</p>
+        <div style="display:flex;flex-direction:column;gap:14px"></div>
+      `;
+      const col = box.lastElementChild;
+      const link = (href, svg, label)=>{
+        const a = document.createElement('a'); a.href=href; a.target='_blank'; a.rel='noopener noreferrer'; a.style.cssText='display:flex;align-items:center;gap:12px;color:#93c5fd;text-decoration:none';
+        a.onmouseenter=()=>a.style.color='#bfdbfe'; a.onmouseleave=()=>a.style.color='#93c5fd';
+        a.innerHTML = svg + `<span>${label}</span>`; col.appendChild(a);
+      };
+      link('https://github.com/KunalJaggi-20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.373 3.433 9.387 8.212 10.963.6.111.75-.258.75-.572 0-.284-.01-1.033-.015-2.023-3.32.723-4.02-1.609-4.02-1.609-.544-1.379-1.327-1.748-1.327-1.748-1.088-.744.082-.729.082-.729 1.205.084 1.838 1.238 1.838 1.238 1.07 1.833 2.81 1.304 3.492.997.108-.775.421-1.304.769-1.605-2.665-.3-5.466-1.332-5.466-5.932 0-1.31.465-2.38 1.234-3.22-.124-.302-.535-1.52.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.652 1.656.241 2.874.118 3.176.77.84 1.232 1.91 1.232 3.22 0 4.61-2.805 5.625-5.475 5.925.43.375.812 1.107.812 2.228 0 1.607-.015 2.898-.015 3.291 0 .315.15.688.755.572 4.779-1.576 8.21-5.65 8.21-10.963c0-6.627-5.372-12-12-12z"/></svg>`, 'GitHub');
+      link('https://www.linkedin.com/in/kunaljaggi20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.761s.784-1.761 1.75-1.761 1.75.79 1.75 1.761-.783 1.761-1.75 1.761zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`, 'LinkedIn');
+      link('https://x.com/KunalJaggi_20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M22.46 2.765c-.88.388-1.828.65-2.82.774.96-.575 1.69-1.488 2.036-2.577-1 .59-2.105 1.02-3.28 1.25-1.02-.997-2.47-1.62-4.08-1.62-3.076 0-5.578 2.502-5.578 5.58 0 .437.05.86.145 1.267-4.636-.232-8.73-2.454-11.47-5.823-.48.825-.75 1.78-.75 2.802 0 1.933.98 3.645 2.46 4.64-1.39-.044-2.69-.426-3.83-1.057v.068c0 2.71 1.93 4.975 4.49 5.49-1.38.375-2.83.456-4.32.164.71 2.23 2.77 3.86 5.21 3.91-1.92.515-4.34.8-6.61.564 2.65 1.704 5.8 2.69 9.17 2.69 11.008 0 17.01-9.14 17.01-17.01 0-.259-.006-.519-.015-.778.71-.51 1.32-.976 1.81-1.603z"/></svg>`, 'X');
+      link('mailto:kunaljaggi225@gmail.com', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M12 12.713l-11.985-7.791c.066-.37.338-.696.786-.884.606-.254 1.258-.387 1.954-.387h17.309c.696 0 1.348.133 1.953.387.447.188.72.514.786.884l-11.984 7.791zm11.985-8.713h-23.985l.015 13.985c0 .351.082.686.237.986.232.463.593.81.996 1.037.606.254 1.259.387 1.954.387h17.309c.696 0 1.348-.133 1.953-.387.403-.227.764-.574.996-1.037.155-.3.237-.635.237-.986l.015-13.985z"/></svg>`, 'Email');
+      root.appendChild(box);
+    }
+
+    function renderTerminal(root){
+      const term = document.createElement('div'); term.className='terminal';
+      const log = document.createElement('div'); log.className='term-log'; term.appendChild(log);
+      const inputBar = document.createElement('div'); inputBar.className='term-input'; inputBar.innerHTML = `<span style="color:#22c55e">C:\\Users\\KunalJaggi&gt;</span>`; term.appendChild(inputBar);
+      const inp = document.createElement('input'); inp.type='text'; inp.placeholder='type a command and press Enter'; inputBar.appendChild(inp);
+
+      const repaint = ()=>{ log.innerHTML=''; terminalOutput.forEach(line=>{ const d=document.createElement('div'); d.textContent=line; log.appendChild(d); }); log.scrollTop = log.scrollHeight; };
+      repaint();
+
+      inp.addEventListener('keydown', async (e)=>{
+        if(e.key==='Enter' && inp.value.trim()!=='' && !isTerminalBusy){
+          const command = inp.value.trim(); inp.value='';
+          terminalOutput.push(`$ ${command}`); repaint();
+          isTerminalBusy = true;
+          const cmd = command.toLowerCase();
+          let response='';
+          if(cmd==='help'){
+            response = `Available commands:\n  - whoami: displays information about me\n  - list projects: lists my projects\n  - cat <filename>: displays content of a file (e.g., cat about.json)\n  - clear: clears the terminal\n  - chat <message>: chat with an assistant about my skills`;
+          } else if(cmd==='whoami'){
+            response = 'I am an aspiring Software Developer and AI/ML Engineer.';
+          } else if(cmd==='list projects'){
+            response = 'Projects: Project Alpha, Neural Network for Image Classification, Portfolio Website.';
+          } else if(cmd.startsWith('cat ')){
+            const fn = cmd.slice(4).trim(); response = fileContent[fn]? fileContent[fn].content : `cat: ${fn}: No such file or directory`;
+          } else if(cmd==='clear'){
+            terminalOutput = ['Terminal cleared.']; repaint(); isTerminalBusy=false; return;
+          } else if(cmd.startsWith('chat ')){
+            const q = command.slice(5).trim(); response = chatLocal(q);
+          } else {
+            response = `Command not found: ${command}`;
+          }
+          terminalOutput.push(response); repaint(); isTerminalBusy=false;
+        }
+      });
+
+      root.appendChild(term);
+      setTimeout(()=>inp.focus(), 50);
+    }
+
+    function chatLocal(q){
+      // Very simple local rules to avoid external APIs
+      const info = {
+        name: 'Kunal Jaggi',
+        role: 'Aspiring Software Developer / AI/ML Engineer',
+        skills: 'Python, JavaScript, C++, Java, SQL, React, Node.js, TensorFlow, PyTorch, Scikit-learn, MongoDB, PostgreSQL',
+        projects: 'Project Alpha, Neural Network for Image Classification, Portfolio Website'
+      };
+      q = q.toLowerCase();
+      if(q.includes('name')) return `I'm ${info.name}.`;
+      if(q.includes('role')) return `Role: ${info.role}.`;
+      if(q.includes('skill')) return `Key skills: ${info.skills}.`;
+      if(q.includes('project')) return `My projects are: ${info.projects}.`;
+      return 'Ask me about my skills, projects, or role 🙂';
+    }
+
+    function openReadme(project){
+      const tpl = $('#readmeTemplate').content.cloneNode(true);
+      const wrap = tpl.querySelector('#readmeBackdrop');
+      tpl.querySelector('#readmeContent').textContent = projectReadmes[project] || '';
+      tpl.querySelector('#readmeClose').onclick = ()=> document.body.removeChild(wrap);
+      document.body.appendChild(wrap);
+      wrap.addEventListener('click', (e)=>{ if(e.target===wrap) document.body.removeChild(wrap); });
+    }
+
+    // Farewell typing
+    const farewellLines = ["[Process completed with exit code 0]","Goodbye, Visitors. It was a pleasure having you. 😉"]; 
+    function runFarewellTyping(){
+      const pad = $('#farewellBody'); pad.innerHTML='';
+      const typeLine = (idx)=>{
+        if(idx>=farewellLines.length){ setTimeout(()=>{ setStage('terminal-closing'); $('#farewellBody2').innerHTML = pad.innerHTML; setTimeout(()=>{ setStage('closed'); },1000); },15000); return; }
+        let i=0; const line = document.createElement('div'); pad.appendChild(line);
+        const t = setInterval(()=>{ line.textContent = farewellLines[idx].slice(0, ++i); if(i>farewellLines[idx].length){ clearInterval(t); setTimeout(()=> typeLine(idx+1), 500); } }, 50);
+      };
+      setTimeout(()=> typeLine(0), 500);
+    }
+
+    // ------------------------------ Boot ------------------------------
+    setStage('initial');
+    runInitial();
+  </script>
+</body>
+</html>
