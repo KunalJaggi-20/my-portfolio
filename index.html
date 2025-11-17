@@ -491,7 +491,34 @@ My personal portfolio, designed to look like a VS Code editor.
       code.textContent=''; caret.style.marginLeft='4px';
       typingTimerEditor = setInterval(()=>{
         if(i<full.length){ code.textContent = full.slice(0,++i); }
-        else { clearInterval(typingTimerEditor); cursorTimerEditor = setInterval(()=> caret.classList.toggle('blink'), 500); }
+        else { 
+clearInterval(typingTimerEditor); 
+  cursorTimerEditor = setInterval(()=> caret.classList.toggle('blink'), 500);
+
+  // ---------- ADD DOWNLOAD BUTTON FOR RESUME TAB ----------
+  if (activeTab === 'resume.pdf') {
+    setTimeout(() => {
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'btn';
+      downloadBtn.textContent = "Download Resume";
+
+      downloadBtn.onclick = () => {
+        const link = document.createElement('a');
+        link.href = "assets/KunalJaggi_resume.pdf";   // Your actual PDF file
+        link.download = "Kunal_Jaggi_Resume.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      // add spacing
+      downloadBtn.style.marginTop = "20px";
+
+      // Append right below the text
+      content.appendChild(downloadBtn);
+    }, 300); // slight delay so typing finishes cleanly
+  }
+        }
       },15);
     }
 
