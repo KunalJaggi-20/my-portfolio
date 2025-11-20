@@ -165,7 +165,7 @@
                   <span>Explorer</span>
                 </div>
                 <div>
-                  <div class="group-title">PORTFOLIO</div>
+                  <div class="group-title">FILES: </div>
                   <div id="fileList"></div>
                 </div>
               </aside>
@@ -565,11 +565,22 @@ clearInterval(typingTimerEditor);
         a.onmouseenter=()=>a.style.color='#bfdbfe'; a.onmouseleave=()=>a.style.color='#93c5fd';
         a.innerHTML = svg + `<span>${label}</span>`; col.appendChild(a);
       };
+        // Contact button (add before root.appendChild(box))
+      
       link('https://github.com/KunalJaggi-20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.373 3.433 9.387 8.212 10.963.6.111.75-.258.75-.572 0-.284-.01-1.033-.015-2.023-3.32.723-4.02-1.609-4.02-1.609-.544-1.379-1.327-1.748-1.327-1.748-1.088-.744.082-.729.082-.729 1.205.084 1.838 1.238 1.838 1.238 1.07 1.833 2.81 1.304 3.492.997.108-.775.421-1.304.769-1.605-2.665-.3-5.466-1.332-5.466-5.932 0-1.31.465-2.38 1.234-3.22-.124-.302-.535-1.52.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.652 1.656.241 2.874.118 3.176.77.84 1.232 1.91 1.232 3.22 0 4.61-2.805 5.625-5.475 5.925.43.375.812 1.107.812 2.228 0 1.607-.015 2.898-.015 3.291 0 .315.15.688.755.572 4.779-1.576 8.21-5.65 8.21-10.963c0-6.627-5.372-12-12-12z"/></svg>`, 'GitHub');
       link('https://www.linkedin.com/in/kunaljaggi20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.761s.784-1.761 1.75-1.761 1.75.79 1.75 1.761-.783 1.761-1.75 1.761zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`, 'LinkedIn');
       link('https://x.com/KunalJaggi_20', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M22.46 2.765c-.88.388-1.828.65-2.82.774.96-.575 1.69-1.488 2.036-2.577-1 .59-2.105 1.02-3.28 1.25-1.02-.997-2.47-1.62-4.08-1.62-3.076 0-5.578 2.502-5.578 5.58 0 .437.05.86.145 1.267-4.636-.232-8.73-2.454-11.47-5.823-.48.825-.75 1.78-.75 2.802 0 1.933.98 3.645 2.46 4.64-1.39-.044-2.69-.426-3.83-1.057v.068c0 2.71 1.93 4.975 4.49 5.49-1.38.375-2.83.456-4.32.164.71 2.23 2.77 3.86 5.21 3.91-1.92.515-4.34.8-6.61.564 2.65 1.704 5.8 2.69 9.17 2.69 11.008 0 17.01-9.14 17.01-17.01 0-.259-.006-.519-.015-.778.71-.51 1.32-.976 1.81-1.603z"/></svg>`, 'X');
-      link('mailto:kunaljaggi225@gmail.com', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M12 12.713l-11.985-7.791c.066-.37.338-.696.786-.884.606-.254 1.258-.387 1.954-.387h17.309c.696 0 1.348.133 1.953.387.447.188.72.514.786.884l-11.984 7.791zm11.985-8.713h-23.985l.015 13.985c0 .351.082.686.237.986.232.463.593.81.996 1.037.606.254 1.259.387 1.954.387h17.309c.696 0 1.348-.133 1.953-.387.403-.227.764-.574.996-1.037.155-.3.237-.635.237-.986l.015-13.985z"/></svg>`, 'Email');
+    //link('mailto:kunaljaggi225@gmail.com', `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path d="M12 12.713l-11.985-7.791c.066-.37.338-.696.786-.884.606-.254 1.258-.387 1.954-.387h17.309c.696 0 1.348.133 1.953.387.447.188.72.514.786.884l-11.984 7.791zm11.985-8.713h-23.985l.015 13.985c0 .351.082.686.237.986.232.463.593.81.996 1.037.606.254 1.259.387 1.954.387h17.309c.696 0 1.348-.133 1.953-.387.403-.227.764-.574.996-1.037.155-.3.237-.635.237-.986l.015-13.985z"/></svg>`, 'Email');
+
+      const contactBtn = document.createElement('button');
+      contactBtn.className = 'btn';
+      contactBtn.textContent = "Contact Me";
+      contactBtn.style.marginTop = "18px";
+      contactBtn.onclick = openContactPopup;
+      
+      box.appendChild(contactBtn);
       root.appendChild(box);
+      
     }
 
     function renderTerminal(root){
@@ -636,6 +647,8 @@ clearInterval(typingTimerEditor);
       wrap.addEventListener('click', (e)=>{ if(e.target===wrap) document.body.removeChild(wrap); });
     }
 
+
+
     // Farewell typing
     const farewellLines = ["[Process completed with exit code 0]","Goodbye, Visitors. It was a pleasure having you. 😉"]; 
     function runFarewellTyping(){
@@ -651,6 +664,109 @@ clearInterval(typingTimerEditor);
     // ------------------------------ Boot ------------------------------
     setStage('initial');
     runInitial();
+
+    // Opens the contact modal
+function openContactPopup() {
+  // Backdrop + modal
+  const backdrop = document.createElement('div');
+  backdrop.className = "modal-backdrop";
+  backdrop.style.zIndex = "9999";
+
+  const modal = document.createElement('div');
+  modal.className = "modal animate-pop-up";
+  modal.style.maxWidth = "520px";
+
+  modal.innerHTML = `
+    <div class="modal-head">
+      <span style="font-weight:700;font-size:1rem">Contact Me</span>
+      <button class="winbtn" id="contactClose">✕</button>
+    </div>
+    <div class="modal-body" style="padding:16px">
+      <label style="font-size:.9rem;color:#d1d5db">Your Email</label>
+      <input id="contactEmail" type="email" placeholder="you@example.com"
+        style="width:100%;padding:10px;margin:6px 0 12px;background:#1F2128;color:#fff;border:1px solid #444;border-radius:6px" />
+
+      <label style="font-size:.9rem;color:#d1d5db">Subject</label>
+      <input id="contactSubject" type="text" placeholder="Subject"
+        style="width:100%;padding:10px;margin:6px 0 12px;background:#1F2128;color:#fff;border:1px solid #444;border-radius:6px" />
+
+      <label style="font-size:.9rem;color:#d1d5db">Message</label>
+      <textarea id="contactMsg" rows="6" placeholder="Write your message..."
+        style="width:100%;padding:10px;margin:6px 0 12px;background:#1F2128;color:#fff;border:1px solid #444;border-radius:6px"></textarea>
+
+      <div style="display:flex;gap:12px;justify-content:flex-end">
+        <button id="contactCancel" class="btn" style="background:#6b7280">Cancel</button>
+        <button id="contactSend" class="btn">Send Message</button>
+      </div>
+
+      <div id="contactStatus" style="margin-top:12px;color:#9ca3af;font-size:.9rem"></div>
+    </div>
+  `;
+
+  backdrop.appendChild(modal);
+  document.body.appendChild(backdrop);
+
+  // Close handlers
+  modal.querySelector('#contactClose').onclick = () => document.body.removeChild(backdrop);
+  modal.querySelector('#contactCancel').onclick = () => document.body.removeChild(backdrop);
+
+  // Send handler
+  modal.querySelector('#contactSend').onclick = async () => {
+    const email = document.getElementById('contactEmail').value.trim();
+    const subject = document.getElementById('contactSubject').value.trim();
+    const message = document.getElementById('contactMsg').value.trim();
+    const status = document.getElementById('contactStatus');
+
+    // Basic validation
+    if(!email || !message) {
+      status.style.color = '#fca5a5';
+      status.textContent = 'Please enter your email and message.';
+      return;
+    }
+    status.style.color = '#9ca3af';
+    status.textContent = 'Sending...';
+
+    try {
+      const res = await sendMessageWeb3({ email, subject, message });
+      if(res && res.success) {
+        status.style.color = '#86efac';
+        status.textContent = 'Message sent — thank you!';
+
+        // optional: close after a short delay
+        setTimeout(()=> { if(document.body.contains(backdrop)) document.body.removeChild(backdrop); }, 1400);
+      } else {
+        status.style.color = '#fca5a5';
+        status.textContent = 'Failed to send. Try again later.';
+        console.warn('web3forms response', res);
+      }
+    } catch (err) {
+      status.style.color = '#fca5a5';
+      status.textContent = 'Send failed — check console.';
+      console.error(err);
+    }
+  };
+}
+
+// call Web3Forms API
+async function sendMessageWeb3({ email, subject, message }) {
+  const payload = {
+    access_key: "64b39a1a-3133-45fd-b974-d29d4eed3c9e",
+    from_email: email,
+    subject: subject || "(No subject)",
+    message: message,
+    // optional: you can set `to_email` if you configured it in dashboard.
+    // to_email: "your-email@example.com"
+  };
+
+  const res = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  return res.json();
+}
+
   </script>
 </body>
 </html>
