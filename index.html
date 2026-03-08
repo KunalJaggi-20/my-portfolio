@@ -285,6 +285,11 @@ const projects = [
     description: 'A cool website that looks like VS Code!',
     github: 'https://github.com/KunalJaggi-20/portfolio-website'
   }
+  {
+    name: 'Secure Bharat',
+    description: 'Security Application - Detect and warn users about SMS scams using AI',
+    github: 'https://github.com/SecureBharat/Secure-Bharat'
+  }
 ];`
       },
       'achievements.txt': {
@@ -349,7 +354,21 @@ My personal portfolio, designed to look like a VS Code editor.
 **Tech Stack:**
 - HTML
 - Tailwind CSS
-- JavaScript`
+- JavaScript`,
+      'Secure Bharat': `### Secure Bharat
+An Android application that detects and warns users about SMS-based scams using keyword analysis and AI-based filtering.
+
+**Features:**
+- Real-time SMS scam detection
+- Floating alert overlay for suspicious messages
+- Notification alerts with scam message preview
+- On-device scam detection to protect user privacy
+
+**Tech Stack:**
+- Kotlin
+- Android Studio
+- BroadcastReceiver
+- Android Notification & Overlay Services`
     };
 
     // ------------------------------ Utilities ------------------------------
@@ -604,7 +623,7 @@ clearInterval(typingTimerEditor);
           } else if(cmd==='whoami'){
             response = 'I am an aspiring Software Developer and AI/ML Engineer.';
           } else if(cmd==='list projects'){
-            response = 'Projects: SLUGA, Transcript Website, Portfolio Website.';
+            response = 'Projects: SLUGA, Transcript Website, Portfolio Website, Secure Bharat.';
           } else if(cmd.startsWith('cat ')){
             const fn = cmd.slice(4).trim(); response = fileContent[fn]? fileContent[fn].content : `cat: ${fn}: No such file or directory`;
           } else if(cmd==='clear'){
