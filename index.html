@@ -504,7 +504,7 @@ clearInterval(typingTimerEditor);
 
       downloadBtn.onclick = () => {
         const link = document.createElement('a');
-        link.href = "assets/KunalJaggi_resume.pdf";   // Your actual PDF file
+        link.href = "assets/KunalJaggi.pdf";   // Your actual PDF file
         link.download = "Kunal_Jaggi_Resume.pdf";
         document.body.appendChild(link);
         link.click();
@@ -746,7 +746,6 @@ function openContactPopup() {
     }
   };
 }
-
 // call Web3Forms API
 async function sendMessageWeb3({ email, subject, message }) {
   const payload = {
@@ -766,7 +765,6 @@ async function sendMessageWeb3({ email, subject, message }) {
 
   return res.json();
 }
-
   </script>
 </body>
 </html>
