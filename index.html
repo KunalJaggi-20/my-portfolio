@@ -7,6 +7,7 @@
   <title>Kunal Jaggi</title>
   <style>
     :root {
+      /* VS Code Dark+ (Default) */
       --bg: #1F2128;
       --panel: #1E1E1E;
       --panel-2: #2D2D2D;
@@ -24,6 +25,43 @@
       --yellow: #eab308;
       --red: #ef4444;
     }
+
+    [data-theme="dracula"] {
+      --bg: #282a36;
+      --panel: #282a36;
+      --panel-2: #44475a;
+      --panel-3: #21222c;
+      --panel-4: #6272a4;
+      --panel-5: #44475a;
+      --border: #6272a4;
+      --border-2: #6272a4;
+      --text: #f8f8f2;
+      --muted: #6272a4;
+      --brand: #bd93f9;
+      --blue: #8be9fd;
+      --purple: #ff79c6;
+    }
+
+    [data-theme="github"] {
+      --bg: #0d1117;
+      --panel: #0d1117;
+      --panel-2: #161b22;
+      --panel-3: #0d1117;
+      --panel-4: #21262d;
+      --panel-5: #30363d;
+      --border: #30363d;
+      --border-2: #21262d;
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --brand: #58a6ff;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+    }
+
+    body, .vscode, .workbench, .explorer, .tabbar, .tab, .card, .modal, .modal-backdrop, .menubar {
+      transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s;
+    }
+
 
     * {
       box-sizing: border-box
@@ -117,16 +155,33 @@
       transform: scaleX(0);
     }
 
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
     /* VSCode window */
     .vscode {
       background: #1F2128;
       border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, 0.05);
       display: flex;
       flex-direction: column;
       height: 80svh;
       max-height: 860px;
-      width: min(1100px, 96vw)
+      width: min(1100px, 96vw);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .titlebar {
@@ -246,19 +301,23 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px;
+      padding: 6px 10px;
       border-radius: 4px;
       cursor: pointer;
-      color: #d1d5db
+      color: #d1d5db;
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
     }
 
     .file:hover {
-      background: var(--panel-5)
+      background: var(--panel-5);
+      color: #fff;
     }
 
     .file.active {
       background: var(--panel-4);
-      color: #fff
+      color: #fff;
+      border-left: 2px solid var(--purple);
     }
 
     .editor {
@@ -281,17 +340,24 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 10px;
+      padding: 8px 14px;
       background: var(--panel);
       border-radius: 8px 8px 0 0;
       color: #fff;
-      font-size: .9rem
+      font-size: .9rem;
+      border-top: 2px solid var(--purple);
+      transition: background 0.2s ease;
     }
 
     .tab .close {
       color: var(--muted);
       margin-left: 6px;
-      cursor: pointer
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    
+    .tab .close:hover {
+      color: #fca5a5;
     }
 
     .content {
@@ -302,7 +368,8 @@
 
     pre {
       white-space: pre-wrap;
-      font-size: .9rem
+      font-size: .9rem;
+      animation: fadeIn 0.4s ease-out forwards;
     }
 
     .statusbar {
@@ -329,42 +396,62 @@
       border-radius: 12px;
       display: flex;
       align-items: center;
-      justify-content: space-between
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border-color: rgba(168, 85, 247, 0.4);
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--blue);
+      background: linear-gradient(135deg, var(--blue), var(--brand));
       color: #fff;
       border: 0;
       border-radius: 10px;
-      padding: 8px 12px;
+      padding: 8px 14px;
       font-weight: 600;
-      cursor: pointer
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .btn:hover {
-      filter: brightness(1.05)
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+      filter: brightness(1.1);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     /* Modal */
     .modal-backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, .75);
+      background: rgba(0, 0, 0, .55);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 16px;
-      z-index: 50
+      z-index: 50;
+      transition: all 0.3s ease;
     }
 
     .modal {
       background: var(--panel-2);
       border-radius: 12px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .6);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, 0.1);
       display: flex;
       flex-direction: column;
       max-width: 680px;
@@ -451,14 +538,20 @@
       height: 48px;
       border-radius: 12px;
       cursor: pointer;
-      transition: transform .15s
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
     }
 
     .dock img:hover {
-      transform: scale(1.1)
+      transform: scale(1.15) translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
     }
 
     /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @keyframes popUp {
       0% {
         transform: scale(.8);
@@ -654,6 +747,15 @@
 
 <body>
   <div class="center" id="app">
+    <!-- Command Palette Modal -->
+    <div id="cmdPalette" class="hidden" style="position: absolute; top: 12%; left: 50%; transform: translateX(-50%); width: min(600px, 90vw); z-index: 100;">
+      <div style="background: var(--panel-2); border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1); display: flex; flex-direction: column; overflow: hidden; backdrop-filter: blur(10px);">
+        <div style="padding: 12px; border-bottom: 1px solid var(--border);">
+          <input id="cmdInput" type="text" placeholder="Search files by name (e.g. projects.js)" style="width: 100%; background: var(--panel); color: var(--text); border: 1px solid var(--blue); border-radius: 4px; padding: 10px; font-family: inherit; font-size: .95rem; outline: none;">
+        </div>
+        <div id="cmdResults" style="max-height: 300px; overflow-y: auto; padding: 6px;"></div>
+      </div>
+    </div>
     <!-- Stage: initial typing -->
     <div id="stage-initial" class="stage-initial">
       <div class="headline"><span id="typed">Hello, World!</span><span id="caret" class="cursor"></span></div>
@@ -706,16 +808,30 @@
             </div>
             <div id="editorContainer" style="display:flex;flex:1;overflow:hidden;position:relative;">
               <!-- Explorer -->
-              <aside class="explorer">
-                <div class="section-title">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M10 4l2 2h8v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6h6z" />
-                  </svg>
-                  <span>Explorer</span>
-                </div>
+              <aside class="explorer" style="justify-content: space-between;">
                 <div>
-                  <div class="group-title">FILES: </div>
-                  <div id="fileList"></div>
+                  <div class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M10 4l2 2h8v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6h6z" />
+                    </svg>
+                    <span>Explorer</span>
+                  </div>
+                  <div style="margin-top:14px">
+                    <div class="group-title">FILES: </div>
+                    <div id="fileList"></div>
+                  </div>
+                </div>
+
+                <!-- Settings / Themes -->
+                <div style="position: relative;">
+                  <button id="btnSettings" style="background:none; border:none; color:#cbd5e1; cursor:pointer; display:flex; align-items:center; gap:8px; padding:6px; border-radius:4px; width:100%; text-align:left;">
+                    <span>⚙️</span> <span style="font-size: .8rem;">Settings</span>
+                  </button>
+                  <div id="themeMenu" class="hidden" style="position: absolute; bottom: 100%; left: 0; width: 100%; background: var(--panel-2); border: 1px solid var(--border-2); border-radius: 6px; padding: 6px; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); z-index: 20;">
+                    <div class="theme-option" data-theme="vscode" onmouseover="this.style.background='var(--blue)'" onmouseout="this.style.background='transparent'" style="padding: 6px; cursor: pointer; border-radius: 4px; font-size: .8rem;">Dark+ (Default)</div>
+                    <div class="theme-option" data-theme="dracula" onmouseover="this.style.background='var(--blue)'" onmouseout="this.style.background='transparent'" style="padding: 6px; cursor: pointer; border-radius: 4px; font-size: .8rem;">Dracula</div>
+                    <div class="theme-option" data-theme="github" onmouseover="this.style.background='var(--blue)'" onmouseout="this.style.background='transparent'" style="padding: 6px; cursor: pointer; border-radius: 4px; font-size: .8rem;">GitHub Dark</div>
+                  </div>
                 </div>
               </aside>
 
@@ -810,7 +926,7 @@
         title: 'About Me',
         language: 'json',
         content: `{
-  "NAME": "Kunal Jaggi"
+  "NAME": "Kunal Jaggi",
   "ROLE": "Aspiring Software Developer / AI/ML Engineer",
   "BIO": "A passionate CSE student with a focus on building impactful applications and exploring the depths of AI and Machine Learning. I enjoy turning complex problems into elegant code and am always eager to learn new technologies.",
   "LOCATION": "Navi Mumbai, INDIA"
@@ -1036,6 +1152,83 @@ An Android application that detects and warns users about SMS-based scams using 
         };
       }
 
+      // Themes Logic
+      const btnSettings = $('#btnSettings');
+      const themeMenu = $('#themeMenu');
+      btnSettings.onclick = (e) => {
+        e.stopPropagation();
+        themeMenu.classList.toggle('hidden');
+      };
+      document.addEventListener('click', () => { themeMenu.classList.add('hidden'); });
+      $$('.theme-option').forEach(el => {
+        el.onclick = () => {
+          const theme = el.getAttribute('data-theme');
+          if(theme === 'vscode') document.body.removeAttribute('data-theme');
+          else document.body.setAttribute('data-theme', theme);
+        };
+      });
+
+      // Command Palette (Ctrl+P) Logic
+      const cmdPalette = $('#cmdPalette');
+      const cmdInput = $('#cmdInput');
+      const cmdResults = $('#cmdResults');
+      let cmdActiveIndex = 0;
+
+      function updateCmdSelection(items) {
+        items.forEach((it, idx) => {
+          it.style.background = (idx === cmdActiveIndex) ? 'var(--blue)' : 'transparent';
+        });
+      }
+
+      function renderCmdResults(query) {
+        cmdResults.innerHTML = '';
+        const files = Object.keys(fileContent).filter(f => f.toLowerCase().includes(query));
+        cmdActiveIndex = 0;
+        files.forEach((f, idx) => {
+          const div = document.createElement('div');
+          div.className = 'cmd-item';
+          div.style.cssText = `padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: .85rem; display: flex; align-items: center; gap: 8px; background: ${idx === 0 ? 'var(--blue)' : 'transparent'};`;
+          div.innerHTML = `<span>${iconFor(f)}</span> <span>${f}</span>`;
+          div.onclick = () => {
+            setActiveTab(f);
+            cmdPalette.classList.add('hidden');
+          };
+          cmdResults.appendChild(div);
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+          e.preventDefault();
+          cmdPalette.classList.remove('hidden');
+          cmdInput.value = '';
+          renderCmdResults('');
+          cmdInput.focus();
+        }
+        if (e.key === 'Escape' && !cmdPalette.classList.contains('hidden')) {
+          cmdPalette.classList.add('hidden');
+        }
+      });
+
+      cmdInput.addEventListener('input', (e) => {
+        renderCmdResults(e.target.value.trim().toLowerCase());
+      });
+
+      cmdInput.addEventListener('keydown', (e) => {
+        const items = $$('.cmd-item', cmdResults);
+        if(e.key === 'ArrowDown') {
+          e.preventDefault();
+          if(items.length > 0) cmdActiveIndex = (cmdActiveIndex + 1) % items.length;
+          updateCmdSelection(items);
+        } else if(e.key === 'ArrowUp') {
+          e.preventDefault();
+          if(items.length > 0) cmdActiveIndex = (cmdActiveIndex - 1 + items.length) % items.length;
+          updateCmdSelection(items);
+        } else if(e.key === 'Enter') {
+          if(items[cmdActiveIndex]) items[cmdActiveIndex].click();
+        }
+      });
+
       // First paint
       renderEditor();
     }
@@ -1075,10 +1268,29 @@ An Android application that detects and warns users about SMS-based scams using 
 
       let i = 0; const full = fileContent[activeTab]?.content || '';
       code.textContent = ''; caret.style.marginLeft = '4px';
+
+      function syntaxHighlight(text, lang) {
+        text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        if (lang === 'json') {
+          return text
+            .replace(/(&quot;.*?&quot;)(\s*:)/g, '<span style="color:#9cdcfe">$1</span>$2')
+            .replace(/(:\s*)(&quot;.*?&quot;)/g, '$1<span style="color:#ce9178">$2</span>')
+            .replace(/[{}]/g, '<span style="color:#ffd700">$&</span>');
+        } else if (lang === 'plaintext') {
+          return text
+            .replace(/^(&gt;.*)$/gm, '<span style="color:#6a9955; font-style: italic;">$1</span>')
+            .replace(/^(\*.*)$/gm, '<span style="color:#569cd6">$1</span>');
+        }
+        return text;
+      }
+
       typingTimerEditor = setInterval(() => {
-        if (i < full.length) { code.textContent = full.slice(0, ++i); }
+        if (i < full.length) { 
+          code.innerHTML = syntaxHighlight(full.slice(0, ++i), fileContent[activeTab]?.language); 
+        }
         else {
           clearInterval(typingTimerEditor);
+          code.innerHTML = syntaxHighlight(full, fileContent[activeTab]?.language);
           cursorTimerEditor = setInterval(() => caret.classList.toggle('blink'), 500);
 
           // ---------- ADD DOWNLOAD BUTTON FOR RESUME TAB ----------
@@ -1186,7 +1398,7 @@ An Android application that detects and warns users about SMS-based scams using 
           const cmd = command.toLowerCase();
           let response = '';
           if (cmd === 'help') {
-            response = `Available commands:\n  - whoami: displays information about me\n  - list projects: lists my projects\n  - cat <filename>: displays content of a file (e.g., cat about.json)\n  - clear: clears the terminal\n  - chat <message>: chat with an assistant about my skills`;
+            response = `Available commands:\n  - whoami: displays information about me\n  - list projects: lists my projects\n  - cat <filename>: displays content of a file (e.g., cat about.json)\n  - clear: clears the terminal\n  - chat <message>: chat with an assistant about my skills\n  - play snake: feeling bored? play snake`;
           } else if (cmd === 'whoami') {
             response = 'I am an aspiring Software Developer and AI/ML Engineer.';
           } else if (cmd === 'list projects') {
@@ -1197,6 +1409,11 @@ An Android application that detects and warns users about SMS-based scams using 
             terminalOutput = ['Terminal cleared.']; repaint(); isTerminalBusy = false; return;
           } else if (cmd.startsWith('chat ')) {
             const q = command.slice(5).trim(); response = chatLocal(q);
+          } else if (cmd === 'play snake' || cmd === 'snake') {
+            response = 'Starting snake game... use Arrow keys to play. Press ESC to quit.';
+            terminalOutput.push(response); repaint();
+            startSnakeGame(log);
+            return; // let startSnakeGame handle busy state
           } else {
             response = `Command not found: ${command}`;
           }
@@ -1206,6 +1423,67 @@ An Android application that detects and warns users about SMS-based scams using 
 
       root.appendChild(term);
       setTimeout(() => inp.focus(), 50);
+    }
+
+    // Snake Minigame HTML5 Canvas logic
+    let snakeInterval = null;
+    function startSnakeGame(root) {
+      isTerminalBusy = true; // prevents typing in term
+      const canvas = document.createElement('canvas');
+      canvas.width = 300; canvas.height = 300;
+      canvas.style.cssText = "border: 1px solid var(--border); display: block; margin: 10px 0; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5);";
+      root.appendChild(canvas);
+      
+      const ctx = canvas.getContext('2d');
+      let snake = [{x: 10, y: 10}];
+      let dir = {x: 1, y: 0};
+      let food = {x: 15, y: 15};
+      let score = 0;
+
+      const keyDownHandler = (e) => {
+        if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
+        if(e.key === 'ArrowUp' && dir.y === 0) dir = {x:0, y:-1};
+        if(e.key === 'ArrowDown' && dir.y === 0) dir = {x:0, y:1};
+        if(e.key === 'ArrowLeft' && dir.x === 0) dir = {x:-1, y:0};
+        if(e.key === 'ArrowRight' && dir.x === 0) dir = {x:1, y:0};
+        if(e.key === 'Escape') endGame();
+      };
+      // Timeout needed so the 'Enter' key press that fired this command doesn't instantly double fire inside game
+      setTimeout(() => document.addEventListener('keydown', keyDownHandler), 100);
+
+      function endGame() {
+        clearInterval(snakeInterval);
+        document.removeEventListener('keydown', keyDownHandler);
+        // Inform user they can type again
+        setTimeout(() => {
+          isTerminalBusy = false;
+        }, 100);
+      }
+
+      snakeInterval = setInterval(() => {
+        const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+        // wall collision or body collision
+        if(head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.some(s => s.x === head.x && s.y === head.y)) {
+          endGame(); return;
+        }
+        snake.unshift(head);
+        if(head.x === food.x && head.y === food.y) {
+          score++;
+          food = {x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20)};
+        } else {
+          snake.pop();
+        }
+
+        // draw
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,300,300);
+        ctx.fillStyle = '#ef4444'; ctx.fillRect(food.x*15, food.y*15, 14, 14); // apple
+        ctx.fillStyle = '#22c55e'; // snake
+        snake.forEach(s => ctx.fillRect(s.x*15, s.y*15, 14, 14));
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.font = "12px monospace";
+        ctx.fillText(`Score: ${score}`, 10, 20);
+      }, 100);
     }
 
     function chatLocal(q) {
